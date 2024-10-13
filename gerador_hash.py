@@ -4,11 +4,19 @@ import customtkinter as ctk
 from tkinter import filedialog, messagebox, ttk
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
-from reportlab.lib.units import inch
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image
 from datetime import datetime
 import PyPDF2
 import os
+import sys
+
+# Função para obter o caminho correto do arquivo de imagem
+def obter_caminho_imagem(nome_imagem):
+    if getattr(sys, 'frozen', False):  # Se o programa estiver congelado
+        caminho = os.path.join(sys._MEIPASS, nome_imagem)
+    else:  # Se estiver em execução normal
+        caminho = nome_imagem
+    return caminho
 
 # Função para gerar hash de uma string
 def gerar_hash(conteudo):
@@ -95,7 +103,7 @@ def gerar_pdf_tabela():
             tabela.setStyle(estilo_tabela)
 
             # Adiciona o cabeçalho com imagem
-            img_path = 'cabeçalho_pol_gov.jpg'
+            img_path = obter_caminho_imagem('cabeçalho_pol_gov.jpg')
             if os.path.exists(img_path):
                 imagem = Image(img_path, width=650, height=100)  # Ajuste o tamanho da imagem conforme necessário
             else:
